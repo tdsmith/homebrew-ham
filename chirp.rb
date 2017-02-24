@@ -3,8 +3,8 @@ class Chirp < Formula
 
   desc "Programs amateur radios"
   homepage "http://chirp.danplanet.com/projects/chirp/wiki/Home"
-  url "http://trac.chirp.danplanet.com/chirp_daily/daily-20170217/chirp-daily-20170217.tar.gz"
-  sha256 "58f850099e42f31e403463603b5774901f4d99c67def66c0ff05e93471cd3e56"
+  url "http://trac.chirp.danplanet.com/chirp_daily/daily-20170222/chirp-daily-20170222.tar.gz"
+  sha256 "5a889e79d5a3a1961f6d5a166d930f642e34b6aab8e80e0cf987dc06c64300f3"
 
   depends_on "gtk-mac-integration"
   depends_on "libxml2" => "with-python"
@@ -20,6 +20,7 @@ class Chirp < Formula
 
   def install
     inreplace "setup.py", "darwin", "noop"
+    inreplace "chirp/ui/mainapp.py", "reporting.check_for_updates(updates_callback)", "pass"
     virtualenv_install_with_resources
     ln_s bin/"chirpw", bin/"chirp"
   end

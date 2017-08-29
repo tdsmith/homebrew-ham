@@ -3,8 +3,8 @@ class Chirp < Formula
 
   desc "Programs amateur radios"
   homepage "http://chirp.danplanet.com/projects/chirp/wiki/Home"
-  url "http://trac.chirp.danplanet.com/chirp_daily/daily-20170406/chirp-daily-20170406.tar.gz"
-  sha256 "2ff0dde5ba1c816ca03dd59b8814c3b67e295df09b94b85d757af1cd8230306c"
+  url "http://trac.chirp.danplanet.com/chirp_daily/daily-20170714/chirp-daily-20170714.tar.gz"
+  sha256 "9ebd201acda7abe826da190f2ab122beb70acb07636fe2dae1a0b80b58d5f4dd"
 
   depends_on "gtk-mac-integration"
   depends_on "libxml2" => "with-python"

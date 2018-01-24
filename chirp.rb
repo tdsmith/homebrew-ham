@@ -10,7 +10,7 @@ class Chirp < Formula
   depends_on "libxml2" => "with-python"
   depends_on "py2cairo"
   depends_on "pygtk"
-  depends_on :python
+  depends_on "python"
 
   resource "pyserial" do
     url "https://files.pythonhosted.org/packages/1f/3b/ee6f354bcb1e28a7cd735be98f39ecf80554948284b41e9f7965951befa6/pyserial-3.2.1.tar.gz"

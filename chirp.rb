@@ -21,6 +21,11 @@ class Chirp < Formula
   def install
     inreplace "setup.py", "darwin", "noop"
     inreplace "chirp/ui/mainapp.py", "reporting.check_for_updates(updates_callback)", "pass"
+
+    # Fix a crash on launch
+    # https://github.com/tdsmith/homebrew-ham/issues/10
+    inreplace "chirp/ui/mainapp.py", "macapp.set_dock_icon_pixbuf(icon_pixmap)", "pass"
+
     virtualenv_install_with_resources
     ln_s bin/"chirpw", bin/"chirp"
   end

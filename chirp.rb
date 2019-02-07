@@ -3,11 +3,10 @@ class Chirp < Formula
 
   desc "Programs amateur radios"
   homepage "http://chirp.danplanet.com/projects/chirp/wiki/Home"
-  url "https://trac.chirp.danplanet.com/chirp_daily/daily-20181014/chirp-daily-20181014.tar.gz"
-  sha256 "3f7d8f5dea18c018b2158bc4eee733f82a4db6b64bbb555cab718ac55ffa7b85"
+  url "https://trac.chirp.danplanet.com/chirp_daily/daily-20190206/chirp-daily-20190206.tar.gz"
+  sha256 "c35bd7b576b1da27a05a8607fb2d766486e25f8d813ae169f266092abbf54f99"
 
   depends_on "gtk-mac-integration"
-  depends_on "libxml2" => "with-python"
   depends_on "py2cairo"
   depends_on "pygtk"
   depends_on "python@2"
@@ -15,6 +14,11 @@ class Chirp < Formula
   resource "pyserial" do
     url "https://files.pythonhosted.org/packages/1f/3b/ee6f354bcb1e28a7cd735be98f39ecf80554948284b41e9f7965951befa6/pyserial-3.2.1.tar.gz"
     sha256 "1eecfe4022240f2eab5af8d414f0504e072ee68377ba63d3b6fe6e66c26f66d1"
+  end
+
+  resource "libxml2" do
+    url "http://xmlsoft.org/sources/libxml2-2.9.9.tar.gz"
+    sha256 "94fb70890143e3c6549f265cee93ec064c80a84c42ad0f23e85ee1fd6540a871"
   end
 
 
@@ -26,7 +30,25 @@ class Chirp < Formula
     # https://github.com/tdsmith/homebrew-ham/issues/10
     inreplace "chirp/ui/mainapp.py", "macapp.set_dock_icon_pixbuf(icon_pixmap)", "pass"
 
-    virtualenv_install_with_resources
+    venv = virtualenv_create(libexec)
+
+    resource("libxml2").stage do
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{libexec}",
+                            "--without-python",
+                            "--without-lzma"
+      system "make", "install"
+
+      cd "python" do
+        # We need to insert our include dir first
+        inreplace "setup.py", "includes_dir = [",
+                              "includes_dir = ['#{libexec}/include', '#{MacOS.sdk_path}/usr/include',"
+        system libexec/"bin/python", "setup.py", "install", "--prefix=#{libexec}"
+      end
+    end
+
+    venv.pip_install resource("pyserial")
+    venv.pip_install_and_link buildpath
     ln_s bin/"chirpw", bin/"chirp"
   end
 end

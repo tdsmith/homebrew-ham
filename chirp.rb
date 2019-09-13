@@ -16,6 +16,11 @@ class Chirp < Formula
     sha256 "1eecfe4022240f2eab5af8d414f0504e072ee68377ba63d3b6fe6e66c26f66d1"
   end
 
+  resource "suds" do
+    url "https://files.pythonhosted.org/packages/bc/d6/960acce47ee6f096345fe5a7d9be7708135fd1d0713571836f073efc7393/suds-0.4.tar.gz"
+    sha256 "d5524ae523bb9e09c57bcdbd1efae2c287d20603688ea31f6020ed180a489af0"
+  end
+
   resource "libxml2" do
     url "http://xmlsoft.org/sources/libxml2-2.9.9.tar.gz"
     sha256 "94fb70890143e3c6549f265cee93ec064c80a84c42ad0f23e85ee1fd6540a871"
@@ -48,6 +53,7 @@ class Chirp < Formula
     end
 
     venv.pip_install resource("pyserial")
+    venv.pip_install resource("suds")
     venv.pip_install_and_link buildpath
     ln_s bin/"chirpw", bin/"chirp"
   end

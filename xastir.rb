@@ -1,23 +1,26 @@
 class Xastir < Formula
   desc "X amateur station tracking and information reporting"
   homepage "http://www.xastir.org/"
-  url "https://downloads.sourceforge.net/xastir/xastir-2.0.8.tar.gz"
-  sha256 "775db0e3c4355051a9030b8398a1d995d48b3b721fa1c9bce5e3010300c1ebb6"
+  url "https://github.com/Xastir/Xastir/archive/refs/tags/Release-2.1.8.tar.gz"
+  sha256 "aa88069f149dbe720276d0134282bc491e7993d8a88380c8fe2a4735ee6444fc"
+  head "https://github.com/Xastir/Xastir.git"
 
-  depends_on "proj"
-  depends_on "pcre"
-  depends_on "berkeley-db"
-  depends_on "gdal"
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+
+  depends_on "imagemagick@6"
   depends_on "libgeotiff"
   depends_on "openmotif"
-  depends_on "jasper"
-  depends_on "graphicsmagick"
+  depends_on "proj"
+  depends_on "shapelib"
 
   def install
+    system "./bootstrap.sh"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
+    system "make", "-j4"
     system "make", "install"
   end
 
